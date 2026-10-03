@@ -271,7 +271,86 @@ def tamamlanan_rezervasyon_temizle():
         for oda_id in bitenler:
             cursor.execute(request, (oda_id,))
 
-def rezervasyon_degistir():
-    giris_tarihi, cikis_tarihi = tarih_alici()
+def oda_tarih_musait_mi(oda_id, yeni_giris, yeni_cikis, mevcut_rez_id):
+    giris_str = yeni_giris.strftime("%Y-%m-%d")
+    cikis_str = yeni_cikis.strftime("%Y-%m-%d")
+    
+    with baglanti_sagla() as conn:
+        cursor = conn.cursor()
+        haric_filtresi = "AND rezervasyon_id != ?" if mevcut_rez_id else ""
+        parametreler = [cikis_str, giris_str]
+        if mevcut_rez_id:
+            parametreler.append(mevcut_rez_id)
 
+        request = """
+            SELECT oda_id, oda_no, oda_tip, oda_kapasite, gunluk_ucret
+            FROM odalar WHERE oda_id NOT IN (
+                SELECT DISTINCT oda_id
+                FROM rezervasyon
+                WHERE durum = 'Onaylandi'
+                    AND giris_tarihi < ? AND cikis_tarihi > ? {haric_filtresi}
+                )
+        """
+        cursor.execute(request, tuple(parametreler))
+        return cursor.fetchall()
+    
+def rezervasyon_degistir():
+    tc_kimlik = input("TC Kimlik Numarası: ")
+    rezervasyonlar = rezervasyon_ara(tc_kimlik)
+
+    if not rezervasyonlar:
+        print(f"{tc_kimlik} Numaralı üşterinin herhangi bir rezervasyonu bulunmamaktadır")
+        return
+
+    if len(rezervasyonlar) == 1:
+        secilen = rezervasyonlar[0]
+    else:
+        secilen_id = int(input("\nTarihini değiştirmek istediğiniz Rezervasyon No: "))
+        secilen = next((r for r in rezervasyonlar if r[0] == secilen_id), None)
+        if not secilen:
+            print("Geçersiz rezervasyon numarası!")
+            return
+
+    rez_id = secilen[0]
+    eski_oda_id = secilen[1]
+
+    print("Yeni giris konaklama tarihlerini girin: ")
+    giris_tarihi, cikis_tarihi = tarih_alici()
+    bos_odalar = oda_tarih_musait_mi(giris_tarihi, cikis_tarihi, rez_id)
+
+    if not bos_odalar:
+        print("Belirtilen tarihlerde boş oda bulunmamaktadır")
+        return
+
+    print(f"\n---{giris_tarihi.strftime('%d.%m.%Y')} - {cikis_tarihi.strftime('%d.%m.%Y')} Arasında müsait odalar---")
+
+    for oda in bos_odalar:
+        print(f"Oda ID: {oda[0]} | Oda No: {oda[1]} | Tip: {oda[2]} | Kapasite: {oda[3]} Kişilik | Günlük: {oda[4]} TL")
+
+    secilen_oda_id = int(input("\nGeçmek istediğiniz Oda ID'sini girin: "))
+    yeni_oda = next((o for o in bos_odalar if o[0] == secilen_oda_id), None)
+
+    if not yeni_oda:
+        print("Hata: Seçilen oda müsait odalar listesinde yok!")
+        return
+
+    yeni_gun = (cikis_tarihi - giris_tarihi).days
+    yeni_ucret = yeni_oda[4] * yeni_gun
+
+    with baglanti_sagla() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE rezervasyon
+            SET oda_id = ?, giris_tarihi = ?, cikis_tarihi = ?, toplam_ucret = ?
+            WHERE rezervasyon_id = ?
+        """, (
+            yeni_oda[0],
+            giris_tarihi.strftime("%Y-%m-%d"),
+            cikis_tarihi.strftime("%Y-%m-%d"),
+            yeni_ucret,
+            rez_id
+        ))
+
+    print(f"\nRezervasyon başarıyla güncellendi!")
+    print(f"Oda No: {yeni_oda[1]} | Gün: {yeni_gun} | Toplam Tutar: {yeni_ucret} TL")
     #tamamla bunu
