@@ -1,0 +1,1247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1180</width>
+    <height>780</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1050</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Otel Rezervasyon ve Oda Yönetim Sistemi</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* Ana Pencere ve Temel Bileşenler */
+QMainWindow {
+    background-color: #0f172a;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+QWidget#centralwidget {
+    background-color: #0f172a;
+}
+
+/* Üst Başlık Kartı */
+QFrame#header_frame {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+}
+
+QLabel#lbl_main_title {
+    color: #f8fafc;
+    font-size: 18pt;
+    font-weight: 700;
+}
+
+QLabel#lbl_main_subtitle {
+    color: #94a3b8;
+    font-size: 9.5pt;
+}
+
+/* Üst Durum Rozetleri */
+QLabel.badge_stat {
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 9pt;
+    font-weight: 600;
+    color: #cbd5e1;
+}
+
+/* Oda Kartları */
+QFrame.room_card {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 14px;
+}
+
+QFrame.room_card:hover {
+    border: 1px solid #3b82f6;
+}
+
+/* Kart Başlığı */
+QLabel.room_number {
+    color: #f8fafc;
+    font-size: 14pt;
+    font-weight: 700;
+    background: transparent;
+    border: none;
+}
+
+QLabel.room_status {
+    background-color: #0f172a;
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 9.5pt;
+    font-weight: 700;
+    border: 1px solid #334155;
+}
+
+/* Bilgi Kutusu ve Satırları */
+QFrame.info_box {
+    background-color: #0f172a;
+    border: 1px solid #293548;
+    border-radius: 10px;
+}
+
+QLabel.info_text {
+    color: #cbd5e1;
+    font-size: 10pt;
+    background: transparent;
+    border: none;
+}
+
+QLabel.info_text_price {
+    color: #38bdf8;
+    font-size: 10.5pt;
+    font-weight: 700;
+    background: transparent;
+    border: none;
+}
+
+QLabel.info_text_date {
+    color: #94a3b8;
+    font-size: 9.5pt;
+    background: transparent;
+    border: none;
+}
+
+/* İşlem Butonu */
+QPushButton.btn_action {
+    background-color: #2563eb;
+    color: #ffffff;
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+    font-size: 10pt;
+    font-weight: 600;
+    padding: 8px 16px;
+    min-height: 36px;
+}
+
+QPushButton.btn_action:hover {
+    background-color: #1d4ed8;
+    border-color: #60a5fa;
+}
+
+QPushButton.btn_action:pressed {
+    background-color: #1e40af;
+}
+
+/* Menü ve Durum Çubuğu */
+QMenuBar {
+    background-color: #0f172a;
+    color: #94a3b8;
+    border-bottom: 1px solid #1e293b;
+}
+
+QMenuBar::item:selected {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+QStatusBar {
+    background-color: #0f172a;
+    color: #64748b;
+    border-top: 1px solid #1e293b;
+}
+   </string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="mainVerticalLayout">
+    <property name="spacing">
+     <number>16</number>
+    </property>
+    <property name="leftMargin">
+     <number>20</number>
+    </property>
+    <property name="topMargin">
+     <number>16</number>
+    </property>
+    <property name="rightMargin">
+     <number>20</number>
+    </property>
+    <property name="bottomMargin">
+     <number>16</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="header_frame">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>74</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>74</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <layout class="QHBoxLayout" name="headerHorizontalLayout">
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="topMargin">
+        <number>10</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>10</number>
+       </property>
+       <item>
+        <layout class="QVBoxLayout" name="headerTitlesLayout">
+         <property name="spacing">
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="lbl_main_title">
+           <property name="text">
+            <string>🏨 GRAND SUITE HOTEL</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lbl_main_subtitle">
+           <property name="text">
+            <string>Canlı Oda Durumu ve Rezervasyon Yönetim Paneli</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="headerSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_badge_total">
+         <property name="class" stdset="0">
+          <string>badge_stat</string>
+         </property>
+         <property name="text">
+          <string>🛏️ Toplam: 6 Oda</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_badge_legend">
+         <property name="class" stdset="0">
+          <string>badge_stat</string>
+         </property>
+         <property name="text">
+          <string>🟢 Müsait  |  🔴 Dolu</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="roomsGridLayout">
+      <property name="spacing">
+       <number>16</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QFrame" name="frame">
+        <property name="class" stdset="0">
+         <string>room_card</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
+        </property>
+        <layout class="QVBoxLayout" name="vLayout_frame">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <property name="leftMargin">
+          <number>16</number>
+         </property>
+         <property name="topMargin">
+          <number>16</number>
+         </property>
+         <property name="rightMargin">
+          <number>16</number>
+         </property>
+         <property name="bottomMargin">
+          <number>16</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="hLayout_top_frame">
+           <item>
+            <widget class="QLabel" name="oda_no">
+             <property name="class" stdset="0">
+              <string>room_number</string>
+             </property>
+             <property name="text">
+              <string>Oda 1</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer_top_frame">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="durum">
+             <property name="class" stdset="0">
+              <string>room_status</string>
+             </property>
+             <property name="text">
+              <string>MÜSAİT</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QFrame" name="info_box_frame">
+           <property name="class" stdset="0">
+            <string>info_box</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Shape::StyledPanel</enum>
+           </property>
+           <layout class="QVBoxLayout" name="vLayout_info_frame">
+            <property name="spacing">
+             <number>8</number>
+            </property>
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>12</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="ad_soyad">
+              <property name="class" stdset="0">
+               <string>info_text</string>
+              </property>
+              <property name="text">
+               <string>Müşteri: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="gunluk_ucret">
+              <property name="class" stdset="0">
+               <string>info_text_price</string>
+              </property>
+              <property name="text">
+               <string>Ücret: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="giris">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Giriş: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="cikis">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Çıkış: -</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="spacer_bottom_frame">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_islem_1">
+           <property name="class" stdset="0">
+            <string>btn_action</string>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Rezervasyon İşlemi</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QFrame" name="frame_2">
+        <property name="class" stdset="0">
+         <string>room_card</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
+        </property>
+        <layout class="QVBoxLayout" name="vLayout_frame_2">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <property name="leftMargin">
+          <number>16</number>
+         </property>
+         <property name="topMargin">
+          <number>16</number>
+         </property>
+         <property name="rightMargin">
+          <number>16</number>
+         </property>
+         <property name="bottomMargin">
+          <number>16</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="hLayout_top_frame_2">
+           <item>
+            <widget class="QLabel" name="oda_no_2">
+             <property name="class" stdset="0">
+              <string>room_number</string>
+             </property>
+             <property name="text">
+              <string>Oda 2</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer_top_frame_2">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="durum_2">
+             <property name="class" stdset="0">
+              <string>room_status</string>
+             </property>
+             <property name="text">
+              <string>MÜSAİT</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QFrame" name="info_box_frame_2">
+           <property name="class" stdset="0">
+            <string>info_box</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Shape::StyledPanel</enum>
+           </property>
+           <layout class="QVBoxLayout" name="vLayout_info_frame_2">
+            <property name="spacing">
+             <number>8</number>
+            </property>
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>12</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="ad_soyad_2">
+              <property name="class" stdset="0">
+               <string>info_text</string>
+              </property>
+              <property name="text">
+               <string>Müşteri: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="gunluk_ucret_2">
+              <property name="class" stdset="0">
+               <string>info_text_price</string>
+              </property>
+              <property name="text">
+               <string>Ücret: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="giris_2">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Giriş: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="cikis_2">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Çıkış: -</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="spacer_bottom_frame_2">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_islem_2">
+           <property name="class" stdset="0">
+            <string>btn_action</string>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Rezervasyon İşlemi</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QFrame" name="frame_3">
+        <property name="class" stdset="0">
+         <string>room_card</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
+        </property>
+        <layout class="QVBoxLayout" name="vLayout_frame_3">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <property name="leftMargin">
+          <number>16</number>
+         </property>
+         <property name="topMargin">
+          <number>16</number>
+         </property>
+         <property name="rightMargin">
+          <number>16</number>
+         </property>
+         <property name="bottomMargin">
+          <number>16</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="hLayout_top_frame_3">
+           <item>
+            <widget class="QLabel" name="oda_no_3">
+             <property name="class" stdset="0">
+              <string>room_number</string>
+             </property>
+             <property name="text">
+              <string>Oda 3</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer_top_frame_3">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="durum_3">
+             <property name="class" stdset="0">
+              <string>room_status</string>
+             </property>
+             <property name="text">
+              <string>MÜSAİT</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QFrame" name="info_box_frame_3">
+           <property name="class" stdset="0">
+            <string>info_box</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Shape::StyledPanel</enum>
+           </property>
+           <layout class="QVBoxLayout" name="vLayout_info_frame_3">
+            <property name="spacing">
+             <number>8</number>
+            </property>
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>12</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="ad_soyad_3">
+              <property name="class" stdset="0">
+               <string>info_text</string>
+              </property>
+              <property name="text">
+               <string>Müşteri: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="gunluk_ucret_3">
+              <property name="class" stdset="0">
+               <string>info_text_price</string>
+              </property>
+              <property name="text">
+               <string>Ücret: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="giris_3">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Giriş: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="cikis_3">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Çıkış: -</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="spacer_bottom_frame_3">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_islem_3">
+           <property name="class" stdset="0">
+            <string>btn_action</string>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Rezervasyon İşlemi</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QFrame" name="frame_4">
+        <property name="class" stdset="0">
+         <string>room_card</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
+        </property>
+        <layout class="QVBoxLayout" name="vLayout_frame_4">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <property name="leftMargin">
+          <number>16</number>
+         </property>
+         <property name="topMargin">
+          <number>16</number>
+         </property>
+         <property name="rightMargin">
+          <number>16</number>
+         </property>
+         <property name="bottomMargin">
+          <number>16</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="hLayout_top_frame_4">
+           <item>
+            <widget class="QLabel" name="oda_no_4">
+             <property name="class" stdset="0">
+              <string>room_number</string>
+             </property>
+             <property name="text">
+              <string>Oda 4</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer_top_frame_4">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="durum_4">
+             <property name="class" stdset="0">
+              <string>room_status</string>
+             </property>
+             <property name="text">
+              <string>MÜSAİT</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QFrame" name="info_box_frame_4">
+           <property name="class" stdset="0">
+            <string>info_box</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Shape::StyledPanel</enum>
+           </property>
+           <layout class="QVBoxLayout" name="vLayout_info_frame_4">
+            <property name="spacing">
+             <number>8</number>
+            </property>
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>12</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="ad_soyad_4">
+              <property name="class" stdset="0">
+               <string>info_text</string>
+              </property>
+              <property name="text">
+               <string>Müşteri: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="gunluk_ucret_4">
+              <property name="class" stdset="0">
+               <string>info_text_price</string>
+              </property>
+              <property name="text">
+               <string>Ücret: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="giris_4">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Giriş: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="cikis_4">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Çıkış: -</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="spacer_bottom_frame_4">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_islem_4">
+           <property name="class" stdset="0">
+            <string>btn_action</string>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Rezervasyon İşlemi</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QFrame" name="frame_5">
+        <property name="class" stdset="0">
+         <string>room_card</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
+        </property>
+        <layout class="QVBoxLayout" name="vLayout_frame_5">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <property name="leftMargin">
+          <number>16</number>
+         </property>
+         <property name="topMargin">
+          <number>16</number>
+         </property>
+         <property name="rightMargin">
+          <number>16</number>
+         </property>
+         <property name="bottomMargin">
+          <number>16</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="hLayout_top_frame_5">
+           <item>
+            <widget class="QLabel" name="oda_no_5">
+             <property name="class" stdset="0">
+              <string>room_number</string>
+             </property>
+             <property name="text">
+              <string>Oda 5</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer_top_frame_5">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="durum_5">
+             <property name="class" stdset="0">
+              <string>room_status</string>
+             </property>
+             <property name="text">
+              <string>MÜSAİT</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QFrame" name="info_box_frame_5">
+           <property name="class" stdset="0">
+            <string>info_box</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Shape::StyledPanel</enum>
+           </property>
+           <layout class="QVBoxLayout" name="vLayout_info_frame_5">
+            <property name="spacing">
+             <number>8</number>
+            </property>
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>12</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="ad_soyad_5">
+              <property name="class" stdset="0">
+               <string>info_text</string>
+              </property>
+              <property name="text">
+               <string>Müşteri: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="gunluk_ucret_5">
+              <property name="class" stdset="0">
+               <string>info_text_price</string>
+              </property>
+              <property name="text">
+               <string>Ücret: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="giris_5">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Giriş: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="cikis_5">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Çıkış: -</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="spacer_bottom_frame_5">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_islem_5">
+           <property name="class" stdset="0">
+            <string>btn_action</string>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Rezervasyon İşlemi</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QFrame" name="frame_6">
+        <property name="class" stdset="0">
+         <string>room_card</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
+        </property>
+        <layout class="QVBoxLayout" name="vLayout_frame_6">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <property name="leftMargin">
+          <number>16</number>
+         </property>
+         <property name="topMargin">
+          <number>16</number>
+         </property>
+         <property name="rightMargin">
+          <number>16</number>
+         </property>
+         <property name="bottomMargin">
+          <number>16</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="hLayout_top_frame_6">
+           <item>
+            <widget class="QLabel" name="oda_no_6">
+             <property name="class" stdset="0">
+              <string>room_number</string>
+             </property>
+             <property name="text">
+              <string>Oda 6</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer_top_frame_6">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="durum_6">
+             <property name="class" stdset="0">
+              <string>room_status</string>
+             </property>
+             <property name="text">
+              <string>MÜSAİT</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QFrame" name="info_box_frame_6">
+           <property name="class" stdset="0">
+            <string>info_box</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Shape::StyledPanel</enum>
+           </property>
+           <layout class="QVBoxLayout" name="vLayout_info_frame_6">
+            <property name="spacing">
+             <number>8</number>
+            </property>
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>12</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="ad_soyad_6">
+              <property name="class" stdset="0">
+               <string>info_text</string>
+              </property>
+              <property name="text">
+               <string>Müşteri: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="gunluk_ucret_6">
+              <property name="class" stdset="0">
+               <string>info_text_price</string>
+              </property>
+              <property name="text">
+               <string>Ücret: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="giris_6">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Giriş: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="cikis_6">
+              <property name="class" stdset="0">
+               <string>info_text_date</string>
+              </property>
+              <property name="text">
+               <string>Çıkış: -</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="spacer_bottom_frame_6">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_islem_6">
+           <property name="class" stdset="0">
+            <string>btn_action</string>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Rezervasyon İşlemi</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1180</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

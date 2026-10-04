@@ -16,3 +16,7 @@ venv/
 *.db
 *.sqlite
 *.sqlite3
+# PyInstaller Çıktıları
+build/
+dist/
+*.spec

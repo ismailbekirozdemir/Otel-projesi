@@ -1,8 +1,25 @@
+import os
+import sys
 import sqlite3 as sql
 from datetime import datetime
+# --- DİNAMİK VERİTABANI YOLU FONKSİYONU ---
+def get_db_path():
+    """
+    Program .exe iken exe'nin bulunduğu gerçek klasörü,
+    normal çalışırken ise database klasörünü baz alır.
+    """
+    if getattr(sys, 'frozen', False):
+        # Program .exe olarak çalışıyorsa: .exe'nin bulunduğu klasör
+        base_dir = os.path.dirname(sys.executable)
+    else:
+        # Normal Python çalışıyorsa: database.py'nin bulunduğu klasör
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        
+    return os.path.join(base_dir, "Otel.db")
 
 def baglanti_sagla():
-    conn = sql.connect('Otel.db')
+    db_yolu = get_db_path()
+    conn = sql.connect(db_yolu)
     conn.execute("PRAGMA foreign_keys = ON;")
     return conn
 
@@ -75,7 +92,7 @@ def oda_ekle():
         cursor = conn.cursor()
         request = """
             INSERT INTO odalar(oda_no, oda_tip, 
-                oda_kapasite,gunluk_ucret,)
+                oda_kapasite,gunluk_ucret)
                 VALUES(?, ?, ?, ?)
         """
         cursor.execute(request, (oda_no, oda_tip, oda_kapasitesi, gunluk_ucret))
@@ -85,7 +102,7 @@ def musait_oda_bul():
 
     with baglanti_sagla() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT oda_id FROM odalar WHERE oda_durum = ?," ('Müsait',))
+        cursor.execute("SELECT oda_id FROM odalar WHERE oda_durum = ?", ('Müsait',))
         return cursor.fetchone()
 
 def rezervasyon_ekle():
@@ -146,7 +163,7 @@ def rezervasyon_ekle():
 def musteri_ara(tc_kimlik):
     with baglanti_sagla() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT musteri_id FROM musteri WHERE tc_kimlik = ?, " (tc_kimlik,))
+            cursor.execute("SELECT musteri_id FROM musteri WHERE tc_kimlik = ?", (tc_kimlik,))
             musteri = cursor.fetchone()
             
             if(musteri == None):
@@ -157,7 +174,7 @@ def musteri_ara(tc_kimlik):
     
             with baglanti_sagla() as conn:
                 cursor = conn.cursor()
-                cursor.execute("SELECT musteri_id FROM musteri WHERE tc_kimlik = ?," (tc_kimlik,))
+                cursor.execute("SELECT musteri_id FROM musteri WHERE tc_kimlik = ?", (tc_kimlik,))
                 musteri = cursor.fetchone()    
     return musteri
 
@@ -198,7 +215,6 @@ def revervasyon_iptal():# tamamla bunu
     else:
         print("İşlem iptal edildi")
 
-
 def tarih_alici():
     while True:
         try:
@@ -211,7 +227,7 @@ def tarih_alici():
             if giris < bugun:
                 print("Hata:Gecmiş bir tarihe rezervasyon yapılamaz")
                 continue
-            if giris < cikis:
+            if giris >= cikis:
                 print("Hata:Çıkış tarihi giriş tarihinden önce olamaz")
                 continue        
             break
@@ -253,7 +269,7 @@ def tamamlanan_rezervasyon_temizle():
         cursor = conn.cursor()
 
         request = """"
-            SELECT oda_id, FROM rezervasyon 
+            SELECT oda_id FROM rezervasyon 
             WHERE durum = 'Dolu' AND cikis_tarihi <= ?
         """
         cursor.execute(request, (bugun,))
@@ -354,3 +370,41 @@ def rezervasyon_degistir():
     print(f"\nRezervasyon başarıyla güncellendi!")
     print(f"Oda No: {yeni_oda[1]} | Gün: {yeni_gun} | Toplam Tutar: {yeni_ucret} TL")
     #tamamla bunu
+
+def arayuz_icin_odalari_getir():
+    """Arayüzdeki 6 kutunun ihtiyaç duyduğu tüm bilgileri tek sorguda döner"""
+    veritabani_olustur() # Tablolar yoksa oluştursun
+    
+    with baglanti_sagla() as conn:
+        cursor = conn.cursor()
+        
+        # Odaları ve varsa onaylı aktif rezervasyon bilgilerini çeken LEFT JOIN sorgusu
+        sorgu = """
+            SELECT 
+                o.oda_no,
+                o.oda_durum,
+                COALESCE(m.ad || ' ' || m.soyad, '-') AS musteri,
+                o.gunluk_ucret,
+                COALESCE(r.giris_tarihi, '-') AS giris,
+                COALESCE(r.cikis_tarihi, '-') AS cikis
+            FROM odalar o
+            LEFT JOIN rezervasyon r ON o.oda_id = r.oda_id AND r.durum = 'Onaylandi'
+            LEFT JOIN musteri m ON r.musteri_id = m.musteri_id
+            ORDER BY o.oda_id ASC
+            LIMIT 6
+        """
+        cursor.execute(sorgu)
+        satirlar = cursor.fetchall()
+        
+        # Arayüzün rahat okuması için sözlük listesine çeviriyoruz
+        sonuc = []
+        for s in satirlar:
+            sonuc.append({
+                "oda_no": s[0],
+                "durum": s[1],
+                "ad_soyad": s[2],
+                "gunluk_ucret": f"{s[3]} TL",
+                "giris": s[4],
+                "cikis": s[5]
+            })
+        return sonuc
