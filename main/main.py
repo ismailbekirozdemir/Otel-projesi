@@ -1,5 +1,11 @@
 import os
 import sys
+
+if hasattr(sys, '_MEIPASS'):
+    sys.path.insert(0, sys._MEIPASS)
+else:
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from PyQt6 import uic
 from PyQt6.QtWidgets import QApplication
 import database.database as database
